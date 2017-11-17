@@ -1,3 +1,8 @@
-import './style.css';
+import $ from 'jquery';
+import _ from 'underscore';
 
-console.log("built successfully!");
+import './css/foundation.css';
+import './css/style.css';
+
+
+console.log('it loaded!');
