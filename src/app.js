@@ -29,7 +29,7 @@ let bookTemplate;
 
 const readForm = () => {
   let bookData = {};
-  ['title', 'author', 'publication_year'].forEach((filed) => {
+  ['title', 'author', 'publication_year'].forEach((field) => {
     // Use jQuery to select the field in the form
     let inputElement = $(`#add-book-form input[name="${ field }"]`);
 
