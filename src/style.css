@@ -1,4 +1,13 @@
-.hello {
-  color: red;
-  background: url('./logo.png');
+.sort-buttons ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+.sort-buttons li {
+  display: inline;
+}
+
+#book-list {
+  list-style: none;
+  margin-left: 0;
 }
