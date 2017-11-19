@@ -17,7 +17,7 @@ const rawBookData = [
     author: 'Octavia Butler',
     publication_year: 1993
   }, {
-    title: 'The Left Hand of Darkness',
+    title: 'A Wizard of Earthsea',
     author: 'Ursula K. Le Guin',
     publication_year: 1969
   }
