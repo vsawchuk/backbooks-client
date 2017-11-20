@@ -52,9 +52,6 @@ The scaffold consists of a number of components that fit together in order to ma
 
   Babel's job is to take JavaScript code written in a [newer version of JavaScript](http://babeljs.io/docs/learn-es2015/) (known as ES6 or ES2015) and convert it to equivalent code in an older version of JavaScript (generally ES5) which has more universal support in web browsers.
 
-  Until now our curriculum has focused on writing ES5 JavaScript, and we can continue to do so for almost all things. One place where we will be using ES6 syntax is for [JavaScript modules](https://spring.io/understanding/javascript-modules).
-* [webpack](https://webpack.js.org/) - Module bundler
-
   webpack is a tool for taking multiple JavaScript modules (which we will be creating using the ES6 syntax) and putting them together coherently into a single JavaScript file, because web browsers don't really understand the concept of JavaScript modules (yet).
 * [Jasmine](https://jasmine.github.io/) - Testing framework
 
