@@ -55,6 +55,10 @@ const render = function render(bookList) {
     let bookHTML = bookTemplate(book.attributes);
     bookListElement.append($(bookHTML));
   });
+
+  // Apply styling to the current sort field
+  $('th.sort').removeClass('current-sort-field');
+  $(`th.sort.${ bookList.comparator }`).addClass('current-sort-field');
 };
 
 $(document).ready(() => {
@@ -70,6 +74,9 @@ $(document).ready(() => {
   // when books are added or removed we will re-render the list
   bookList.on('update', render);
 
+  // Also re-render on sort events
+  bookList.on('sort', render);
+
   // Listen for submit events on the add book form
   // Note that we create a closure w/ bookList - if this callback
   // were defined with the helper methods above we would have to do
@@ -78,5 +85,15 @@ $(document).ready(() => {
     event.preventDefault();
     let bookData = readForm();
     bookList.add(bookData);
+  });
+
+  // Build event handlers for each of the table headers
+  ['title', 'author', 'publication_year'].forEach((field) => {
+    let headerElement = $(`.sort.${ field }`);
+    headerElement.on('click', () => {
+      console.log(`Sorting by ${ field }`);
+      bookList.comparator = field;
+      bookList.sort();
+    });
   });
 });
