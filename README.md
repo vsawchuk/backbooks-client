@@ -19,7 +19,7 @@ The result is very similar to running `rails server` in your Rails projects. How
 
 ![Animation showing webpack launch](http://g.recordit.co/99luXnTbP8.gif)
 
-For our purposes we should only need to look at the "Log" portion of the screen, which is where we will see any JavaScript syntax errors that webpack catches. It will report any errors similar to how Rails will report errors to the terminal.
+The terminal will output any errors webpack detects as it bundles the code files together.  So you can check here for build-time error messages.
 
 ## FAQ
 ### What is the Backbone scaffold?
