@@ -28,22 +28,9 @@ const rawBookData = [
 let bookTemplate;
 
 const render = function render(bookList) {
-  let bookListElement = $('#book-list');
-  bookListElement.empty();
 
-  bookList.forEach((book) => {
-    console.log(`Rendering book ${ book.get('title') }`);
-    let bookHTML = bookTemplate(book.attributes);
-    bookListElement.append($(bookHTML));
-  });
 };
 
 $(document).ready(() => {
   bookTemplate = _.template($('#book-template').html());
-
-  // Build a collection from our seed data
-  let bookList = new BookList(rawBookData);
-
-  // Do an initial render so that seed data appears on screen
-  render(bookList);
 });
