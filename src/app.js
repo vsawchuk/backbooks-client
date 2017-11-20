@@ -55,10 +55,6 @@ const render = function render(bookList) {
     let bookHTML = bookTemplate(book.attributes);
     bookListElement.append($(bookHTML));
   });
-
-  // Apply styling to the current sort field
-  $('th.sort').removeClass('current-sort-field');
-  $(`th.sort.${ bookList.comparator }`).addClass('current-sort-field');
 };
 
 $(document).ready(() => {
