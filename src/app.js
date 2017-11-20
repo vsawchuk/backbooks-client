@@ -27,25 +27,6 @@ const rawBookData = [
 // once we know the template is available
 let bookTemplate;
 
-const readForm = () => {
-  let bookData = {};
-  ['title', 'author', 'publication_year'].forEach((field) => {
-    // Use jQuery to select the field in the form
-    let inputElement = $(`#add-book-form input[name="${ field }"]`);
-
-    // Grab the field's current value
-    bookData[field] = inputElement.val();
-
-    // Clear the field
-    inputElement.val('');
-  });
-
-  console.log('Read book data:');
-  console.log(bookData);
-
-  return bookData;
-};
-
 const render = function render(bookList) {
   let bookListElement = $('#book-list');
   bookListElement.empty();
@@ -65,18 +46,4 @@ $(document).ready(() => {
 
   // Do an initial render so that seed data appears on screen
   render(bookList);
-
-  // Register render as an event handler for update, so that
-  // when books are added or removed we will re-render the list
-  bookList.on('update', render);
-
-  // Listen for submit events on the add book form
-  // Note that we create a closure w/ bookList - if this callback
-  // were defined with the helper methods above we would have to do
-  // some extra work to get access.
-  $('#add-book-form').on('submit', (event) => {
-    event.preventDefault();
-    let bookData = readForm();
-    bookList.add(bookData);
-  });
 });
