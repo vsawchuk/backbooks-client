@@ -1,13 +1,13 @@
-.sort-buttons ul {
-  list-style: none;
-  margin-left: 0;
-}
-
-.sort-buttons li {
-  display: inline;
-}
-
 #book-list {
   list-style: none;
   margin-left: 0;
+}
+
+th.sort {
+  cursor: pointer;
+}
+
+.current-sort-field {
+  background-color: darkgrey;
+  color: white;
 }
