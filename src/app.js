@@ -76,9 +76,9 @@ $(document).ready(() => {
   $('#add-book-form').on('submit', (event) => {
     event.preventDefault();
 
-    let bookData = readForm();
+    const bookData = readForm();
     bookList.add(bookData);
-    
+
     clearForm();
   });
 });
