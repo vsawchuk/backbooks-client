@@ -9,6 +9,7 @@ import './css/style.css';
 // Our Modules
 import BookList from 'collections/book_list';
 
+const BOOK_FIELDS = ['title', 'author', 'publication_year'];
 const rawBookData = [
   {
     title: 'Practical Object-Oriented Design in Ruby',
@@ -29,6 +30,25 @@ const rawBookData = [
 // once we know the template is available
 let bookTemplate;
 
+const readForm = function readForm() {
+  const bookData = {};
+  BOOK_FIELDS.forEach((field) => {
+    // Use jQuery to select the field in the form
+    const inputElement = $(`#add-book-form input[name="${ field }"]`);
+
+    // Grab the field's current value
+    bookData[field] = inputElement.val();
+  });
+
+  return bookData;
+};
+
+const clearForm = function clearForm() {
+  // Don't need to loop, instead we can use jQuery to
+  // select all the inputs at once
+  $('#add-book-form input[name]').val('');
+};
+
 const render = function render(bookList) {
   const bookListElement = $('#book-list');
   bookListElement.empty();
@@ -43,6 +63,22 @@ const render = function render(bookList) {
 $(document).ready(() => {
   bookTemplate = _.template($('#book-template').html());
 
+  // Build the collection from seed data
   const bookList = new BookList(rawBookData);
+
+  // Do an initial render so seed data appears on screen
   render(bookList);
+
+  // When a book is added or removed, redraw the table
+  bookList.on('update', render);
+
+  // Listen for form submissions
+  $('#add-book-form').on('submit', (event) => {
+    event.preventDefault();
+
+    let bookData = readForm();
+    bookList.add(bookData);
+    
+    clearForm();
+  });
 });
