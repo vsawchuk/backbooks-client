@@ -10,21 +10,6 @@ import './css/style.css';
 import BookList from 'collections/book_list';
 
 const BOOK_FIELDS = ['title', 'author', 'publication_year'];
-const rawBookData = [
-  {
-    title: 'Practical Object-Oriented Design in Ruby',
-    author: 'Sandy Metz',
-    publication_year: 2012
-  }, {
-    title: 'Parable of the Sower',
-    author: 'Octavia Butler',
-    publication_year: 1993
-  }, {
-    title: 'A Wizard of Earthsea',
-    author: 'Ursula K. Le Guin',
-    publication_year: 1969
-  }
-];
 
 // Starts undefined - we'll set this in $(document).ready
 // once we know the template is available
@@ -68,10 +53,10 @@ $(document).ready(() => {
   bookTemplate = _.template($('#book-template').html());
 
   // Build the collection from seed data
-  const bookList = new BookList(rawBookData);
+  const bookList = new BookList();
 
-  // Do an initial render so seed data appears on screen
-  render(bookList);
+  // Get data from the API (will trigger an 'update' upon completion)
+  bookList.fetch();
 
   // When a book is added or removed, or when the order changes,
   // redraw the table
