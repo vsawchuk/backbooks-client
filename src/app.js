@@ -4,9 +4,6 @@ import './style.css';
 import $ from 'jquery';
 import _ from 'underscore';
 
-import Book from './models/book.js';
-import BookList from './collections/book_list.js';
-
 const rawBookData = [
   {
     title: 'Practical Object-Oriented Design in Ruby',
