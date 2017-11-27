@@ -69,8 +69,10 @@ $(document).ready(() => {
   // Do an initial render so seed data appears on screen
   render(bookList);
 
-  // When a book is added or removed, redraw the table
+  // When a book is added or removed, or when the order changes,
+  // redraw the table
   bookList.on('update', render);
+  bookList.on('sort', render);
 
   // Listen for form submissions
   $('#add-book-form').on('submit', (event) => {
@@ -80,5 +82,15 @@ $(document).ready(() => {
     bookList.add(bookData);
 
     clearForm();
+  });
+
+  // Build event handlers for each of the table headers
+  BOOK_FIELDS.forEach((field) => {
+    const headerElement = $(`.sort.${ field }`);
+    headerElement.on('click', () => {
+      console.log(`Sorting by ${ field }`);
+      bookList.comparator = field;
+      bookList.sort();
+    });
   });
 });
