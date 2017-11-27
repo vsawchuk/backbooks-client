@@ -18,7 +18,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist'], { exclude: ['index.html', 'favicon.png'] }),
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.HotModuleReplacementPlugin()
   ],
 
   module: {
@@ -27,10 +27,7 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015']
-          }
+          loader: 'babel-loader'
         }
       },
       {
