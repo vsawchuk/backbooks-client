@@ -68,7 +68,8 @@ $(document).ready(() => {
     event.preventDefault();
 
     const bookData = readForm();
-    bookList.add(bookData);
+    const book = bookList.add(bookData);
+    book.save();
 
     clearForm();
   });
