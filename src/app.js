@@ -4,6 +4,8 @@ import './style.css';
 import $ from 'jquery';
 import _ from 'underscore';
 
+import BookList from 'collections/book_list';
+
 const rawBookData = [
   {
     title: 'Practical Object-Oriented Design in Ruby',
@@ -25,9 +27,19 @@ const rawBookData = [
 let bookTemplate;
 
 const render = function render(bookList) {
+  const bookListElement = $('#book-list');
+  bookListElement.empty();
 
+  bookList.forEach((book) => {
+    console.log(`Rendering book ${ book.get('title') }`);
+    let bookHTML = bookTemplate(book.attributes);
+    bookListElement.append($(bookHTML));
+  });
 };
 
 $(document).ready(() => {
   bookTemplate = _.template($('#book-template').html());
+
+  const bookList = new BookList(rawBookData);
+  render(bookList);
 });
