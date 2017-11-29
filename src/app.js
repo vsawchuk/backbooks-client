@@ -7,48 +7,7 @@ import './style.css';
 import Book from './models/book';
 import BookList from './collections/book_list';
 
-const rawBookData = [
-  {
-    title: 'Practical Object-Oriented Design in Ruby',
-    author: 'Sandy Metz',
-    publication_year: 2012
-  }, {
-    title: 'Parable of the Sower',
-    author: 'Octavia Butler',
-    publication_year: 1993
-  }, {
-    title: 'A Wizard of Earthsea',
-    author: 'Ursula K. Le Guin',
-    publication_year: 1969
-  }
-];
-
-const codingInterview = new Book({
-  title: 'Cracking the Coding Interview',
-  author: 'Gale',
-  publication_year: 1900,
-  illustrator: 'Bob Ross',
-})
-
-rawBookData.push(codingInterview.attributes);
-codingInterview.set('title', 'The Lord of the Flies');
-
-const bookList = new BookList(rawBookData);
-bookList.add(codingInterview);
-console.log(bookList);
-console.log(bookList.at(2));
-console.log(bookList.get('c2'));
-
-bookList.forEach((book) => console.log(`${book.get('title')} by ${book.get('author')}`));
-// Backbone has a bunch of built in methods for collections: http://backbonejs.org/#Collection
-const authors = bookList.pluck('author');
-console.log(authors);
-
-const newBooks = bookList.filter((book) => book.get('publication_year') > 1900);
-console.log(newBooks);
-
-// Starts undefined - we'll set this in $(document).ready
-// once we know the template is available
+const bookList = new BookList();
 let bookTemplate;
 
 const render = function render(list) {
@@ -57,8 +16,65 @@ const render = function render(list) {
   list.forEach((book) => $bookList.append(bookTemplate(book.attributes)));
 };
 
+const fields = ['title', 'author', 'publication_year'];
+
+const events = {
+  addBook(event) {
+    event.preventDefault();
+    const bookData = {};
+    fields.forEach((field) => {
+      bookData[field] = $(`input[name=${field}]`).val();
+      $(`input[name=${field}]`).val('');
+    });
+    const book = new Book(bookData);
+    bookList.add(book);
+    book.save({}, {
+      success: events.successfulSave,
+      error: events.failedSave,
+    });
+  },
+  sortBooks() {
+    const classes = $(this).attr('class').split(/\s+/);
+    let sortClass;
+    for (let i = 0; i < classes.length; i += 1) {
+      if (fields.includes(classes[i])) {
+        sortClass = classes[i];
+      }
+    }
+    bookList.comparator = sortClass;
+    if (classes.includes('desc')) {
+      const descModels = bookList.models.reverse();
+      render(descModels);
+      $(this).removeClass('desc');
+    } else {
+      bookList.sort();
+      $(this).addClass('desc').siblings().removeClass('desc');
+      render(bookList);
+    }
+    $(this).addClass('current-sort-field').siblings().removeClass('current-sort-field');
+  },
+  successfulSave(book, response) {
+    $('#status-messages ul').empty();
+    $('#status-messages ul').append(`<li>${book.get('title')} added!</li>`);
+    $('#status-messages').show();
+  },
+  failedSave(book, response) {
+    book.destroy();
+    $('#status-messages ul').empty();
+    const errors = response.responseJSON.errors;
+    for (let key in errors) {
+      errors[key].forEach((issue) => {
+        $('#status-messages ul').append(`<li>${key}: ${issue}</li>`);
+      })
+    }
+    $('#status-messages').show();
+  },
+};
+
 $(document).ready(() => {
   bookTemplate = _.template($('#book-template').html());
-  render(bookList);
-  render(bookList);
+  $('#add-book-form').on('submit', events.addBook);
+  bookList.on('update', render, bookList);
+  $('.sort').on('click', events.sortBooks);
+  bookList.fetch();
 });
