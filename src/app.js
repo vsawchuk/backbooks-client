@@ -23,15 +23,43 @@ const events = {
     event.preventDefault();
     const bookData = {};
     fields.forEach((field) => {
-      bookData[field] = $(`input[name=${field}]`).val();
+      let val = $(`input[name=${field}]`).val()
+      if (val === '') {
+        val = undefined;
+      }
+      bookData[field] = val;
       $(`input[name=${field}]`).val('');
     });
     const book = new Book(bookData);
-    bookList.add(book);
-    book.save({}, {
-      success: events.successfulSave,
-      error: events.failedSave,
-    });
+    if (book.isValid()) {
+      bookList.add(book);
+      book.save({}, {
+        success: events.successfulSave,
+        error: events.failedSave,
+      });
+    } else {
+      $('#status-messages ul').empty();
+      for (let error in book.validationError) {
+        book.validationError[error].forEach((message) => $('#status-messages ul').append(`<li>${message}</li>`));
+      }
+      $('#status-messages').show();
+    }
+  },
+  successfulSave(book) {
+    $('#status-messages ul').empty();
+    $('#status-messages ul').append(`<li>${book.get('title')} added!</li>`);
+    $('#status-messages').show();
+  },
+  failedSave(book, response) {
+    book.destroy();
+    $('#status-messages ul').empty();
+    const errors = response.responseJSON.errors;
+    for (let key in errors) {
+      errors[key].forEach((issue) => {
+        $('#status-messages ul').append(`<li>${key}: ${issue}</li>`);
+      })
+    }
+    $('#status-messages').show();
   },
   sortBooks() {
     const classes = $(this).attr('class').split(/\s+/);
@@ -52,22 +80,6 @@ const events = {
       render(bookList);
     }
     $(this).addClass('current-sort-field').siblings().removeClass('current-sort-field');
-  },
-  successfulSave(book, response) {
-    $('#status-messages ul').empty();
-    $('#status-messages ul').append(`<li>${book.get('title')} added!</li>`);
-    $('#status-messages').show();
-  },
-  failedSave(book, response) {
-    book.destroy();
-    $('#status-messages ul').empty();
-    const errors = response.responseJSON.errors;
-    for (let key in errors) {
-      errors[key].forEach((issue) => {
-        $('#status-messages ul').append(`<li>${key}: ${issue}</li>`);
-      })
-    }
-    $('#status-messages').show();
   },
 };
 
